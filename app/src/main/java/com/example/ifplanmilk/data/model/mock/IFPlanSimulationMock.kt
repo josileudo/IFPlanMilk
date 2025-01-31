@@ -5,6 +5,7 @@ import java.util.Date
 
 val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
+        id = 1,
         title = "Fazenda da Esperança",
         creationDate = Date(),
         description = "Uma fazenda dedicada à produção sustentável de leite.",
@@ -29,6 +30,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         otherAndWater = 500.0
     ),
     IFPlanSimulation(
+        id = 2,
         title = "Fazenda da Alagoa",
         creationDate = Date(),
         description = "Um local que adora animais",
