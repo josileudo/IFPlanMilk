@@ -1,9 +1,10 @@
-package com.rocketseat.nlw.nearby.ui.theme
+package com.example.ifplanmilk.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
 val GreenLight = Color(0xFF3B9B62)
 val GreenBase = Color(0xFF257F49)
+val Green100 = Color(0xFFD0EADD)
 val GreenDark = Color(0xFF052914)
 val GreenExtraLight = Color(0xFFE9F3EF)
 

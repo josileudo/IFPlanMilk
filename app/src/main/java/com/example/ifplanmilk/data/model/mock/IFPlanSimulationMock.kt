@@ -1,0 +1,55 @@
+package com.example.ifplanmilk.data.model.mock
+
+import com.example.ifplanmilk.data.model.IFPlanSimulation
+import java.util.Date
+
+val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
+    IFPlanSimulation(
+        title = "Fazenda da Esperança",
+        creationDate = Date(),
+        description = "Uma fazenda dedicada à produção sustentável de leite.",
+        pesoCorporal = 650.0,
+        milkProduction = 1200.0,
+        milkFatContent = 3.5,
+        pbFatMilk = 0.8,
+        horizontalShift = 5.0,
+        verticalShift = 2.0,
+        lactatingCows = 50.0,
+        investmentsPerLiters = 0.15,
+        familyIncome = 3000.0,
+        depreciationRate = 10.0,
+        area = 100.0,
+        picketsNumber = 10.0,
+        precipitation = 1200.0,
+        maxTemperature = 35.0,
+        minTemperature = 15.0,
+        relativeHumidity = 75.0,
+        velocityVents = 10.0,
+        nDosage = 2.5,
+        otherAndWater = 500.0
+    ),
+    IFPlanSimulation(
+        title = "Fazenda da Alagoa",
+        creationDate = Date(),
+        description = "Um local que adora animais",
+        pesoCorporal = 820.0,
+        milkProduction = 2100.0,
+        milkFatContent = 3.5,
+        pbFatMilk = 0.8,
+        horizontalShift = 5.0,
+        verticalShift = 2.0,
+        lactatingCows = 50.0,
+        investmentsPerLiters = 0.15,
+        familyIncome = 3000.0,
+        depreciationRate = 10.0,
+        area = 100.0,
+        picketsNumber = 10.0,
+        precipitation = 1200.0,
+        maxTemperature = 35.0,
+        minTemperature = 15.0,
+        relativeHumidity = 75.0,
+        velocityVents = 10.0,
+        nDosage = 2.5,
+        otherAndWater = 500.0
+    )
+)

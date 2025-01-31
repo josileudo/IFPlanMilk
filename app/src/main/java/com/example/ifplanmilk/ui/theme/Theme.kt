@@ -1,5 +1,4 @@
-package com.rocketseat.nlw.nearby.ui.theme
-
+package com.example.ifplanmilk.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -10,6 +9,8 @@ private val LightColors = lightColorScheme(
     primary = GreenBase,
     onPrimary = Color.White,
     secondary = RedBase,
+    inverseSurface = Gray300,
+    surfaceTint = Green100,
     onSecondary = Color.White,
     background = Gray100,
     onBackground = Gray600,
@@ -22,8 +23,10 @@ private val LightColors = lightColorScheme(
 private val DarkColors = darkColorScheme(
     primary = GreenLight,
     onPrimary = Color.Black,
+    surfaceTint = GreenDark,
     secondary = RedLight,
     onSecondary = Color.Black,
+    inverseSurface = Gray100,
     background = Gray600,
     onBackground = Gray100,
     surface = Gray600,
