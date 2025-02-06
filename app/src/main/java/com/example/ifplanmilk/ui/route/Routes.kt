@@ -1,18 +1,47 @@
 package com.example.ifplanmilk.ui.route
 
-import kotlinx.serialization.Serializable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.ui.graphics.vector.ImageVector
 
-@Serializable
-data object Splash
+data object Routes {
+    const val Splash = "splash"
+    const val Welcome = "welcome"
+    const val Home = "home"
+    const val Navigation = "navigation"
+    const val NewSimulation = "new_simulation"
+    const val Settings = "settings"
+}
 
-@Serializable
-data object Welcome
+sealed class BottomNavItem(
+    val route: String,
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
+) {
+    object Simulations : BottomNavItem(
+        route = Routes.Home,
+        title = "Simulações",
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Outlined.Home
+    )
 
-@Serializable
-data object Home
+    object NewSimulation : BottomNavItem(
+        route = Routes.NewSimulation,
+        title = "Nova Simulação",
+        selectedIcon = Icons.Filled.Person,
+        unselectedIcon = Icons.Outlined.Person
+    )
 
-@Serializable
-data object Settings
-
-@Serializable
-data object NewSimulation
+    object Settings : BottomNavItem(
+        route = Routes.Settings,
+        title = "Configuração",
+        selectedIcon = Icons.Filled.Settings,
+        unselectedIcon = Icons.Outlined.Settings
+    )
+}

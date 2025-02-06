@@ -1,4 +1,4 @@
-package com.example.ifplanmilk.ui.screens.Welcome
+package com.example.ifplanmilk.ui.screens.welcome
 
 sealed class WelcomeUiEvent {
     data object OnCompleteOnboarding: WelcomeUiEvent()

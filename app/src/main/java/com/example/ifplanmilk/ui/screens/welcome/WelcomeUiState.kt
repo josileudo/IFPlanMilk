@@ -1,4 +1,4 @@
-package com.example.ifplanmilk.ui.screens.Welcome
+package com.example.ifplanmilk.ui.screens.welcome
 
 data class WelcomeUiState (
     var isLoading: Boolean = false,
