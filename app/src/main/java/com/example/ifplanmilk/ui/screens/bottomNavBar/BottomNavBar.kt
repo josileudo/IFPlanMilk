@@ -1,8 +1,11 @@
 package com.example.ifplanmilk.ui.screens.bottomNavBar
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -20,6 +23,9 @@ fun BottomNavigationBar(
         items.forEach { item ->
             NavigationBarItem(
                 selected = currentDestination == item.route,
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                ),
                 onClick = {
                     if (currentDestination != item.route) {
                         navController.navigate(item.route) {
