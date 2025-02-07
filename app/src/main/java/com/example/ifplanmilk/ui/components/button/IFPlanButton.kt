@@ -35,6 +35,7 @@ fun IFPlanButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
     iconRes: ImageVector? = null,
+
     size: String = "md"
 ) {
     val height = when (size) {
@@ -127,5 +128,16 @@ fun IFPlanButtonLoadingPreview() {
         modifier = Modifier.fillMaxWidth(),
         text = "Entrar",
         isLoading = true
+    )
+}
+
+@Preview
+@Composable
+fun IFPlanButtonDisabledPreview() {
+    // Loading button
+    IFPlanButton(
+        modifier = Modifier.fillMaxWidth(),
+        text = "Entrar",
+        enabled = false
     )
 }

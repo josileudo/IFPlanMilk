@@ -78,7 +78,7 @@ fun WelcomeScreen(
 
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {position ->
                 PagerScreen(
                     welcome = pagerList[position],
