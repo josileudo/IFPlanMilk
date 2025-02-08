@@ -23,18 +23,17 @@ import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit = {}
+    onEvent: (HomeUiEvent) -> Unit = {},
+    onNavigateToNewSimulation: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.padding(horizontal = 8.dp).padding(top = 8.dp) //.fillMaxSize()
+        modifier = Modifier.padding(horizontal = 8.dp).padding(top = 8.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
                 onHeaderClick = { onEvent(HomeUiEvent.OnOpenModal) }
             )
-
-            Text(text = "$uiState.showDialog")
 
             HomeSearchBar(
                 modifier = Modifier.fillMaxWidth()
@@ -51,7 +50,7 @@ fun HomeScreen(
                 dialogText = "Você pode criar uma nova simulação clicando no botão abaixo.",
                 icon = Icons.Filled.Add,
                 onDismissRequest = { onEvent(HomeUiEvent.OnCloseModal) },
-                onConfirmation = { /*TODO*/ },
+                onConfirmation = { onNavigateToNewSimulation() },
                 showDialog = uiState.showDialog
             )
         }

@@ -44,7 +44,7 @@ fun IFPlanCardList(
     }
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun IFPlanCardListPreview() {
     IFPlanMilkTheme {

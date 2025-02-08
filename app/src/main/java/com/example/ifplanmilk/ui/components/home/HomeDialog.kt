@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.ifplanmilk.ui.components.modal.IFPlanModal
+import com.example.ifplanmilk.ui.components.dialog.IFPlanDialog
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
 @Composable
@@ -22,7 +22,7 @@ fun HomeDialog(
     onConfirmation: () -> Unit = {},
     showDialog: Boolean = false
 ) {
-    IFPlanModal(
+    IFPlanDialog(
         dialogTitle = dialogTitle,
         dialogText = dialogText,
         icon = icon,

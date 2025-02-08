@@ -1,23 +1,12 @@
 package com.example.ifplanmilk.ui.components.stepper
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,10 +24,10 @@ fun IFPlanStepper(
     modifier: Modifier = Modifier,
     currentStep: Int = 0,
     steps: List<IFPlanStepSimulation>,
-    content: @Composable () -> Unit = {}
+    onFinished: () -> Unit = {}
 ) {
     var currStep by remember { mutableStateOf(currentStep) }
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -63,7 +52,7 @@ fun IFPlanStepper(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(1f).padding(bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth(1f).padding(bottom = 56.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IFPlanButton(
@@ -81,8 +70,9 @@ fun IFPlanStepper(
                 text = if(currStep == steps.lastIndex) "Finalizar" else "Próximo",
                 onClick = {
                     if(currStep < steps.lastIndex) {
-                        // Navegue para a próxima etapa
                         currStep ++
+                    } else {
+                        onFinished()
                     }
                 },
                 size = "sm"
@@ -91,7 +81,7 @@ fun IFPlanStepper(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun IFPlanStepperPreview() {
     IFPlanMilkTheme {

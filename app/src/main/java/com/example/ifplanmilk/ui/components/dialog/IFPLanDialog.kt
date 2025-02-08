@@ -1,4 +1,4 @@
-package com.example.ifplanmilk.ui.components.modal
+package com.example.ifplanmilk.ui.components.dialog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,12 +24,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewModelScope
 import androidx.wear.compose.material.MaterialTheme
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 import com.example.ifplanmilk.ui.theme.Typography
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.Timer
+import kotlin.concurrent.schedule
 
+@OptIn(InternalCoroutinesApi::class)
 @Composable
-fun IFPlanModal (
+fun IFPlanDialog(
     modifier: Modifier = Modifier.fillMaxWidth().size(height = 300.dp, width = 100.dp),
     dialogTitle: String,
     dialogText: String = "This is an example dialog.",
@@ -39,6 +49,7 @@ fun IFPlanModal (
     content: @Composable () -> Unit = {}
 ) {
     if(showDialog) {
+        val coroutineScope = rememberCoroutineScope()
         Dialog(
             onDismissRequest = { onDismissRequest() },
         ) {
@@ -88,7 +99,12 @@ fun IFPlanModal (
                             )
                         }
                         TextButton(
-                            onClick = { onConfirmation() },
+                            onClick = {
+                                coroutineScope.launch {
+                                    onDismissRequest()
+                                    onConfirmation()
+                                }
+                            },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Criar")
@@ -104,7 +120,7 @@ fun IFPlanModal (
 @Composable
 private fun IFPlanModalPreview() {
     IFPlanMilkTheme {
-        IFPlanModal(
+        IFPlanDialog(
             dialogTitle = "Example Dialog",
             dialogText = "This is an example dialog.",
             icon = Icons.Rounded.Add,

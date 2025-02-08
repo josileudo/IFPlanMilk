@@ -52,11 +52,6 @@ fun BottomNavigationBar(
 }
 
 @Composable
-fun SearchScreen() {
-
-}
-
-@Composable
 fun ProfileScreen() {
 
 }
