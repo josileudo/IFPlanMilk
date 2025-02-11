@@ -51,7 +51,10 @@ fun HomeScreen(
                 icon = Icons.Filled.Add,
                 onDismissRequest = { onEvent(HomeUiEvent.OnCloseModal) },
                 onConfirmation = { onNavigateToNewSimulation() },
-                showDialog = uiState.showDialog
+                onConfirmationEnabled = uiState.title.isNotEmpty(),
+                showDialog = uiState.showDialog,
+                uiState = uiState,
+                onEvent = onEvent
             )
         }
     }

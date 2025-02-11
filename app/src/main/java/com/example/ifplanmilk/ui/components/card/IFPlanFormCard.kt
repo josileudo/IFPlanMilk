@@ -8,13 +8,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ifplanmilk.data.model.IFPlanSeeItemResult
+import com.example.ifplanmilk.data.model.IFPlanSeeItem
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
 @Composable
 fun IFPlanFormCard(
     onFormClick: () -> Unit = {},
-    items: List<IFPlanSeeItemResult> = emptyList()
+    items: List<IFPlanSeeItem> = emptyList()
 ) {
     Card {
         LazyColumn  {

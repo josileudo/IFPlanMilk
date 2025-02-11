@@ -46,6 +46,7 @@ fun IFPlanDialog(
     onDismissRequest: () -> Unit = {},
     onConfirmation: () -> Unit = {},
     showDialog: Boolean = false,
+    onConfirmationEnabled: Boolean = true,
     content: @Composable () -> Unit = {}
 ) {
     if(showDialog) {
@@ -106,6 +107,7 @@ fun IFPlanDialog(
                                 }
                             },
                             modifier = Modifier.padding(8.dp),
+                            enabled = onConfirmationEnabled
                         ) {
                             Text("Criar")
                         }

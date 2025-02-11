@@ -1,5 +1,7 @@
 package com.example.ifplanmilk.ui.components.card
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,9 +33,10 @@ import androidx.compose.ui.unit.sp
 import com.example.ifplanmilk.R
 import com.example.ifplanmilk.data.model.IFPlanSimulation
 import com.example.ifplanmilk.data.model.mock.IFPlanSimulationMock
-import com.example.ifplanmilk.data.utils.formatToSimpleDate
+import com.example.ifplanmilk.data.utils.timestampToDate
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun IFPlanCard(
     modifier: Modifier = Modifier,
@@ -41,7 +44,7 @@ fun IFPlanCard(
     onClick: () -> Unit = {}
 ) {
   OutlinedCard(
-      modifier = Modifier.fillMaxWidth(),
+      modifier = modifier.fillMaxWidth(),
       onClick = onClick,
       colors = CardDefaults.outlinedCardColors(),
       border = BorderStroke(2.dp, MaterialTheme.colorScheme.inverseSurface)
@@ -80,7 +83,7 @@ fun IFPlanCard(
                           )
                       )
                       Text(
-                          text = data.creationDate.formatToSimpleDate(),
+                          text = data.creationDate.timestampToDate(),
                           textAlign = TextAlign.Center,
                           style = MaterialTheme.typography.titleSmall.copy(
                               fontSize = 13.sp,
@@ -114,6 +117,7 @@ fun IFPlanCard(
   }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview()
 @Composable
 fun IFPLanCardPreview() {

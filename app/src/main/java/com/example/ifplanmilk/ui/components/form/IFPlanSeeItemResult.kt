@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.ifplanmilk.data.model.IFPlanSeeItemResult
+import com.example.ifplanmilk.data.model.IFPlanSeeItem
 import com.example.ifplanmilk.data.model.mock.IFPlanSeeItemResultMock
 import com.example.ifplanmilk.data.utils.currencyFormat
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
@@ -22,7 +22,7 @@ import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 @Composable
 fun IFPlanSeeItemResult(
     modifier: Modifier = Modifier,
-    item: IFPlanSeeItemResult
+    item: IFPlanSeeItem
 ) {
     Column {
         Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp, horizontal = 8.dp),

@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ifplanmilk.ui.components.dialog.IFPlanDialog
+import com.example.ifplanmilk.ui.screens.home.HomeUiEvent
+import com.example.ifplanmilk.ui.screens.home.HomeUiState
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
 @Composable
@@ -20,7 +22,10 @@ fun HomeDialog(
     icon: ImageVector,
     onDismissRequest: () -> Unit = {},
     onConfirmation: () -> Unit = {},
-    showDialog: Boolean = false
+    showDialog: Boolean = false,
+    onConfirmationEnabled: Boolean = true,
+    uiState: HomeUiState = HomeUiState(),
+    onEvent: (HomeUiEvent) -> Unit = {}
 ) {
     IFPlanDialog(
         dialogTitle = dialogTitle,
@@ -28,20 +33,21 @@ fun HomeDialog(
         icon = icon,
         onDismissRequest = onDismissRequest,
         onConfirmation = onConfirmation,
+        onConfirmationEnabled = onConfirmationEnabled,
         showDialog = showDialog
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
-                value = "",
-                onValueChange = { /* Handle text change */ },
+                value = uiState.title,
+                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("title", it)) },
                 placeholder = { Text("Título") },
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = { /* Handle text change */ },
+                value = uiState.description,
+                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("description", it)) },
                 placeholder = { Text("Descrição") },
             )
         }

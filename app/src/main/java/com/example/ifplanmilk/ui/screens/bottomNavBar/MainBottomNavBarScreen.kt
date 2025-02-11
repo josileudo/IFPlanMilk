@@ -11,10 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.ifplanmilk.data.model.IFPlanSimulation
 import com.example.ifplanmilk.ui.route.BottomNavItem
-import com.example.ifplanmilk.ui.screens.simulation.NewSimulationScreen
 import com.example.ifplanmilk.ui.screens.home.HomeScreen
 import com.example.ifplanmilk.ui.screens.home.HomeViewModel
+import com.example.ifplanmilk.ui.screens.simulation.NewSimulationScreen
+import com.example.ifplanmilk.ui.screens.simulation.result.ResultSimulation
 
 @Composable
 fun MainBottomNavigationBar() {
@@ -25,13 +27,14 @@ fun MainBottomNavigationBar() {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val homeUiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold (
+    Scaffold(
         bottomBar = {
-            if(currentRoute in listOf(
-                BottomNavItem.Simulations.route,
+            if (currentRoute in listOf(
+                    BottomNavItem.Simulations.route,
 //                BottomNavItem.NewSimulation.route,
-                BottomNavItem.Settings.route
-            )) {
+                    BottomNavItem.Settings.route
+                )
+            ) {
                 BottomNavigationBar(navController = bottomNavController)
             }
         }
@@ -50,8 +53,19 @@ fun MainBottomNavigationBar() {
                     }
                 )
             }
-            composable(BottomNavItem.NewSimulation.route) { NewSimulationScreen() }
+            composable(BottomNavItem.NewSimulation.route) {
+                NewSimulationScreen(
+                    simulationTitle = homeUiState.title,
+                    description = homeUiState.description,
+                    onNavigateToResult = {
+                        bottomNavController.navigate("result_simulation")
+                    }
+                )
+            }
             composable(BottomNavItem.Settings.route) { ProfileScreen() }
+            composable("result_simulation"){
+                ResultSimulation()
+            }
         }
     }
 }

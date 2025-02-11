@@ -7,7 +7,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 1,
         title = "Fazenda da Esperança",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Uma fazenda dedicada à produção sustentável de leite.",
         pesoCorporal = 650.0,
         milkProduction = 1200.0,
@@ -32,7 +32,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 2,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,
@@ -57,7 +57,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 7,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,
@@ -82,7 +82,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 3,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,
@@ -106,7 +106,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     ), IFPlanSimulation(
         id = 8,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,
@@ -131,7 +131,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 4,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,
@@ -156,7 +156,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
         id = 5,
         title = "Fazenda da Alagoa",
-        creationDate = Date(),
+        creationDate = 1739044409,
         description = "Um local que adora animais",
         pesoCorporal = 820.0,
         milkProduction = 2100.0,

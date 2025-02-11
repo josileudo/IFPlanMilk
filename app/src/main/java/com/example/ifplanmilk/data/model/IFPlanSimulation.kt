@@ -1,11 +1,13 @@
 package com.example.ifplanmilk.data.model
 
+import kotlinx.serialization.Serializable
 import java.util.Date
 
+@Serializable
 data class IFPlanSimulation (
     val id: Long = 0,
     val title: String,
-    val creationDate: Date,
+    val creationDate: Long,
     val description: String?,
     val pesoCorporal: Double,
     val milkProduction: Double,
