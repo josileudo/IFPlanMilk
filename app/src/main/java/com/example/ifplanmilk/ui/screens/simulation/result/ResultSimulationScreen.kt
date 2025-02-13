@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,91 +33,121 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ifplanmilk.data.model.IFPlanSeeItem
 import com.example.ifplanmilk.ui.components.button.IFPlanButton
 import com.example.ifplanmilk.ui.components.form.IFPlanSeeItemResult
-import com.example.ifplanmilk.ui.components.simulation.ResultVariationSimulation
+import com.example.ifplanmilk.ui.screens.simulation.animal.AnimalSimulationUiState
+import com.example.ifplanmilk.ui.screens.simulation.area.AreaSimulationUiState
+import com.example.ifplanmilk.ui.screens.simulation.climateSoil.ClimateSoilSimulationUiState
+import com.example.ifplanmilk.ui.screens.simulation.economy.EconomySimulationUiState
+import com.example.ifplanmilk.ui.screens.simulation.sliders.SlidersSimulationScreen
+import com.example.ifplanmilk.ui.screens.simulation.sliders.SlidersSimulationViewModel
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 import com.example.ifplanmilk.ui.theme.Typography
 
 @Composable
 fun ResultSimulation(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: ResultSimulationUiState,
+    onEvent: (ResultSimulationUiEvent) -> Unit = {},
+    areaState: AreaSimulationUiState,
+    animalState: AnimalSimulationUiState,
+    economyState: EconomySimulationUiState,
+    climateSoilState: ClimateSoilSimulationUiState,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    val slidersViewModel: SlidersSimulationViewModel = viewModel()
+    val slidersState by slidersViewModel.uiState.collectAsStateWithLifecycle()
+
+    val result = uiState.resultSimulation
     val soilAtAnimalsResult = listOf(
         IFPlanSeeItem(
             title = "Tensão da água no solo (bar)",
-            value = "10.0"
+            value = result?.tenAguaSolo ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Produção de forragem (kg MV/m2)",
-            value = "10.0"
+            value = result?.prodForragem ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Capacidade de suporte (animais)",
-            value = "10.0"
+            value = result?.capaSuporte ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Taxa de lotação (vacas/ha)",
-            value = "10.0"
+            value = result?.taxaLotacao ?: 0.0
         ),
         IFPlanSeeItem(
             title = "ITU",
-            value = "10.0"
+            value = result?.itu ?: 0.0
         ),
         IFPlanSeeItem(
             title = "DPL (L/vaca/dia)",
-            value = "10.0"
+            value = result?.dpl ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Pegada hídrica (L H2O/L leite)",
-            value = "10.0"
+            value = result?.pegadaHidrica ?: 0.0
         ),
     )
-
     val systemsEconomicResult = listOf(
         IFPlanSeeItem(
             title = "Produção diária (L/dia)",
-            value = "10.0"
+            value = result?.prodDiaria ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Produção de leite (L/ha/dia)",
-            value = "10.0"
+            value = result?.prodLeiteDia ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Produção de leite (L/ha/ano)",
-            value = "10.0"
+            value = result?.prodLeiteAno ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Perda receita estresse (R$/ano)",
-            value = "10.0"
+            value = result?.perdaReceitaEstresse ?: 0.0
         ),
         IFPlanSeeItem(
             title = "COE (R$/L)",
-            value = "10.0"
+            value = result?.coe ?: 0.0
         ),
         IFPlanSeeItem(
             title = "COT (R$/L)",
-            value = "10.0"
+            value = result?.cot ?: 0.0
         ),
         IFPlanSeeItem(
             title = "ML (R$/L)",
-            value = "10.0"
+            value = result?.mlArea ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Receita por área (R$/ha/ano)",
-            value = "10.0"
+            value = result?.receitaTotalAno ?: 0.0
         ),
         IFPlanSeeItem(
             title = "TRCI (%a.a.)",
-            value = "10.0"
+            value = result?.trci ?: 0.0
         ),
         IFPlanSeeItem(
             title = "Payback (anos)",
-            value = "10.0"
+            value = result?.payback ?: 0.0
         ),
     )
+
+    LaunchedEffect(slidersState) {
+        onEvent(
+            ResultSimulationUiEvent.OnResultSimulation(
+                areaState = areaState,
+                animalState = animalState,
+                economyState = economyState,
+                climateSoilState = climateSoilState,
+                slidersState = slidersState
+            )
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,9 +161,11 @@ fun ResultSimulation(
             Text(text = "Resultado da simulação", modifier.fillMaxWidth())
 
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()).padding(bottom = 26.dp),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 26.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
+            ) {
 
                 OutlinedCard(
                     modifier = modifier.fillMaxWidth(),
@@ -209,9 +242,11 @@ fun ResultSimulation(
         }
     }
     if (showBottomSheet) {
-        ResultVariationSimulation(
+        SlidersSimulationScreen(
             onDismiss = { showBottomSheet = false },
-            modifier = Modifier.zIndex(5f)
+            modifier = Modifier.zIndex(5f),
+            uiState = slidersState,
+            onEvent = slidersViewModel::onEvent
         )
     }
 
@@ -221,6 +256,13 @@ fun ResultSimulation(
 @Composable
 fun ResultSimulationPreview() {
     IFPlanMilkTheme {
-        ResultSimulation(modifier = Modifier.zIndex(5f))
+        ResultSimulation(
+            modifier = Modifier.zIndex(5f),
+            uiState = ResultSimulationUiState(),
+            areaState = AreaSimulationUiState(),
+            animalState = AnimalSimulationUiState(),
+            economyState = EconomySimulationUiState(),
+            climateSoilState = ClimateSoilSimulationUiState(),
+        )
     }
 }

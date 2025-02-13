@@ -8,7 +8,7 @@ data class IFPlanSimulation (
     val id: Long = 0,
     val title: String,
     val creationDate: Long,
-    val description: String?,
+    val description: String = "",
     val pesoCorporal: Double,
     val milkProduction: Double,
     val milkFatContent: Double,
@@ -28,4 +28,5 @@ data class IFPlanSimulation (
     val velocityVents: Double,
     val nDosage: Double,
     val otherAndWater: Double,
+    val waterAvailableForIrrigation: Double
 )

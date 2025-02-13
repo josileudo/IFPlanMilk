@@ -1,5 +1,6 @@
 package com.example.ifplanmilk.data.utils
 
+
 import java.lang.Double
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -16,3 +17,4 @@ fun String.currencyFormat(decimals: Int = 2): String {
 
     return formatter.format(Double(this)).toString()
 }
+

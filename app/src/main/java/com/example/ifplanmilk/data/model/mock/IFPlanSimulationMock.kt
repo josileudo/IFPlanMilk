@@ -1,7 +1,6 @@
 package com.example.ifplanmilk.data.model.mock
 
 import com.example.ifplanmilk.data.model.IFPlanSimulation
-import java.util.Date
 
 val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
     IFPlanSimulation(
@@ -27,7 +26,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ),
     IFPlanSimulation(
         id = 2,
@@ -52,7 +52,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ),
     IFPlanSimulation(
         id = 7,
@@ -77,7 +78,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ),
     IFPlanSimulation(
         id = 3,
@@ -102,7 +104,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ), IFPlanSimulation(
         id = 8,
         title = "Fazenda da Alagoa",
@@ -126,7 +129,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ),
     IFPlanSimulation(
         id = 4,
@@ -151,7 +155,8 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     ),
     IFPlanSimulation(
         id = 5,
@@ -176,6 +181,7 @@ val IFPlanSimulationMock: List<IFPlanSimulation> = listOf(
         relativeHumidity = 75.0,
         velocityVents = 10.0,
         nDosage = 2.5,
-        otherAndWater = 500.0
+        otherAndWater = 500.0,
+        waterAvailableForIrrigation = 1000.0
     )
 )

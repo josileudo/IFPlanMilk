@@ -16,6 +16,6 @@ class MainModule {
     @Provides
     @Singleton
     fun provideWelcomeRepository(
-        @ApplicationContext context : Context
+        @ApplicationContext context: Context
     ) = WelcomeRepository(context = context)
 }
