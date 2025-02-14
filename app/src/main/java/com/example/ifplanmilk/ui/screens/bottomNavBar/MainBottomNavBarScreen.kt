@@ -138,6 +138,7 @@ fun MainBottomNavigationBar() {
                     animalState = animalState,
                     economyState = economyState,
                     climateSoilState = climateSoilSimulationState,
+                    onNavigateToHome = { bottomNavController.navigate(BottomNavItem.Simulations.route) }
                 )
             }
         }
