@@ -26,7 +26,8 @@ fun NewSimulationScreen(
     simulationTitle: String,
     description: String = "",
     stepsSimulation: List<IFPlanStepSimulation> = emptyList(),
-    onNavigateToResult: () -> Unit = {}
+    onNavigateToResult: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {}
 ) {
 
     Box(
@@ -40,7 +41,7 @@ fun NewSimulationScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 IFPlanButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { onNavigateToHome() },
                     iconRes = Icons.Filled.ArrowBack
                 )
 

@@ -3,6 +3,7 @@ package com.example.ifplanmilk.ui.screens.bottomNavBar
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,9 +39,6 @@ fun MainBottomNavigationBar() {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val homeUiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
-    val resultSimulationViewModel: ResultSimulationViewModel = viewModel()
-    val resultSimulationUiState by resultSimulationViewModel.uiState.collectAsStateWithLifecycle()
-
     val areaViewModel: AreaSimulationViewModel = viewModel()
     val areaState by areaViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -52,7 +50,6 @@ fun MainBottomNavigationBar() {
 
     val climateSoilSimulationViewModel: ClimateSoilSimulationViewModel = viewModel()
     val climateSoilSimulationState by climateSoilSimulationViewModel.uiState.collectAsStateWithLifecycle()
-
 
     val stepsSimulation = listOf(
         IFPlanStepSimulation(
@@ -97,7 +94,6 @@ fun MainBottomNavigationBar() {
         bottomBar = {
             if (currentRoute in listOf(
                     BottomNavItem.Simulations.route,
-//                BottomNavItem.NewSimulation.route,
                     BottomNavItem.Settings.route
                 )
             ) {
@@ -127,16 +123,19 @@ fun MainBottomNavigationBar() {
                     stepsSimulation = stepsSimulation,
                     onNavigateToResult = {
                         bottomNavController.navigate(Routes.ResultSimulation)
+                    },
+                    onNavigateToHome = {
+                        bottomNavController.navigate(BottomNavItem.Simulations.route)
                     }
                 )
             }
             composable(Routes.ResultSimulation) {
                 ResultSimulation(
-                    uiState = resultSimulationUiState,
-                    onEvent = resultSimulationViewModel::onEvent,
                     areaState = areaState,
                     animalState = animalState,
                     economyState = economyState,
+                    simulationTitle = homeUiState.title,
+                    description = homeUiState.description,
                     climateSoilState = climateSoilSimulationState,
                     onNavigateToHome = { bottomNavController.navigate(BottomNavItem.Simulations.route) }
                 )

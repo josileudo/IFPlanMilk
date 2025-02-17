@@ -14,4 +14,17 @@ sealed class ResultSimulationUiEvent {
         var climateSoilState: ClimateSoilSimulationUiState,
         var slidersState: SlidersSimulationUiState
     ) : ResultSimulationUiEvent()
+
+    data class OnSaveSimulation(
+        val simulationTitle: String = "",
+        val description: String = "",
+        var areaState: AreaSimulationUiState,
+        var animalState: AnimalSimulationUiState,
+        var economyState: EconomySimulationUiState,
+        var climateSoilState: ClimateSoilSimulationUiState,
+        var slidersState: SlidersSimulationUiState
+    ) : ResultSimulationUiEvent()
+
+    data object OnSuccessSimulationSaved : ResultSimulationUiEvent()
+    data object OnFiledSimulationSaved : ResultSimulationUiEvent()
 }

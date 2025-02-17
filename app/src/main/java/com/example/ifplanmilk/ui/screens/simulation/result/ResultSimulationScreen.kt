@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ifplanmilk.ui.components.button.IFPlanButton
@@ -43,15 +44,20 @@ import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 @Composable
 fun ResultSimulation(
     modifier: Modifier = Modifier,
-    uiState: ResultSimulationUiState,
-    onEvent: (ResultSimulationUiEvent) -> Unit = {},
     areaState: AreaSimulationUiState,
     animalState: AnimalSimulationUiState,
     economyState: EconomySimulationUiState,
     climateSoilState: ClimateSoilSimulationUiState,
-    onNavigateToHome: () -> Unit = {}
-) {
+    simulationTitle: String = "",
+    description: String = "",
+    onNavigateToHome: () -> Unit = {},
+    ) {
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    val resultSimulationViewModel: ResultSimulationViewModel = hiltViewModel()
+    val uiState by resultSimulationViewModel.uiState.collectAsStateWithLifecycle()
+    val onEvent = resultSimulationViewModel::onEvent
+    val eventFlow = resultSimulationViewModel.eventFlow
 
     val slidersViewModel: SlidersSimulationViewModel = viewModel()
     val slidersState by slidersViewModel.uiState.collectAsStateWithLifecycle()
@@ -70,6 +76,17 @@ fun ResultSimulation(
         )
     }
 
+    LaunchedEffect(Unit) {
+        eventFlow.collect { event ->
+            when (event) {
+                is ResultSimulationUiEvent.OnSuccessSimulationSaved -> {
+                    onNavigateToHome()
+                }
+                else -> {}
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +98,19 @@ fun ResultSimulation(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             ResultSimulationHeader(
-                onClick = { onNavigateToHome() }
+                onClick = {
+                    onEvent(
+                        ResultSimulationUiEvent.OnSaveSimulation(
+                            simulationTitle = simulationTitle,
+                            description = description,
+                            areaState = areaState,
+                            animalState = animalState,
+                            economyState = economyState,
+                            slidersState = slidersState,
+                            climateSoilState = climateSoilState
+                        )
+                    )
+                }
             )
 
             ResultSimulationContainer(
@@ -144,7 +173,6 @@ fun ResultSimulationPreview() {
     IFPlanMilkTheme {
         ResultSimulation(
             modifier = Modifier.zIndex(5f),
-            uiState = ResultSimulationUiState(),
             areaState = AreaSimulationUiState(),
             animalState = AnimalSimulationUiState(),
             economyState = EconomySimulationUiState(),

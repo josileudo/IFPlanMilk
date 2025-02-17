@@ -1,7 +1,10 @@
 package com.example.ifplanmilk.ui.screens.home
 
+import com.example.ifplanmilk.data.model.IFPlanSimulation
+
 data class HomeUiState(
     var showDialog: Boolean = false,
     var title: String = "",
-    var description: String = ""
+    var description: String = "",
+    var simulationList: List<IFPlanSimulation> = emptyList()
 )
