@@ -32,13 +32,6 @@ sealed class BottomNavItem(
         unselectedIcon = Icons.Outlined.Home
     )
 
-    object NewSimulation : BottomNavItem(
-        route = Routes.NewSimulation,
-        title = "Nova Simulação",
-        selectedIcon = Icons.Filled.Person,
-        unselectedIcon = Icons.Outlined.Person
-    )
-
     object Settings : BottomNavItem(
         route = Routes.Settings,
         title = "Configuração",

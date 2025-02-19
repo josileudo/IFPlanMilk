@@ -8,12 +8,14 @@ import com.example.ifplanmilk.data.repository.SimulationRepository
 import com.example.ifplanmilk.data.utils.toDomain
 import com.example.ifplanmilk.data.utils.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -29,6 +31,8 @@ class HomeViewModel @Inject constructor(
             is HomeUiEvent.OnUpdateFields -> onUpdateFields(event.field, event.value)
             is HomeUiEvent.OnFetchSimulations -> onFetchSimulations()
             is HomeUiEvent.OnDeleteSimulation -> onDeleteSimulation(event.simulation)
+            is HomeUiEvent.OnResetDialogForm -> onResetDialogForm()
+            is HomeUiEvent.OnSaveForm -> onSaveForm()
             else -> {}
         }
     }
@@ -54,6 +58,8 @@ class HomeViewModel @Inject constructor(
             when(field) {
                 "title" -> it.copy(title = value)
                 "description" -> it.copy(description = value)
+                "formTitle" -> it.copy(formTitle = value)
+                "formDescription" -> it.copy(formDescription = value)
                 else -> it
             }
         }
@@ -74,8 +80,30 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.deleteSimulation(delSimulation.toEntity())
+                onFetchSimulations()
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    private fun onSaveForm() {
+        _uiState.update {
+            it.copy(
+                title = it.formTitle,
+                description = it.formDescription
+            )
+        }
+    }
+
+    private fun onResetDialogForm() {
+        viewModelScope.launch {
+            delay(3.seconds)
+            _uiState.update {
+                it.copy(
+                    formTitle = "",
+                    formDescription = ""
+                )
             }
         }
     }

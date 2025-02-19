@@ -59,9 +59,16 @@ fun HomeScreen(
                 dialogTitle = "Criar nova simulação",
                 dialogText = "Você pode criar uma nova simulação clicando no botão abaixo.",
                 icon = Icons.Filled.Add,
-                onDismissRequest = { onEvent(HomeUiEvent.OnCloseModal) },
-                onConfirmation = { onNavigateToNewSimulation() },
-                onConfirmationEnabled = uiState.title.isNotEmpty(),
+                onDismissRequest = {
+                    onEvent(HomeUiEvent.OnCloseModal)
+                    onEvent(HomeUiEvent.OnResetDialogForm)
+                },
+                onConfirmation = {
+                    onEvent(HomeUiEvent.OnSaveForm).apply {
+                        onNavigateToNewSimulation()
+                    }
+                 },
+                onConfirmationEnabled = uiState.formTitle.isNotEmpty(),
                 showDialog = uiState.showDialog,
                 uiState = uiState,
                 onEvent = onEvent

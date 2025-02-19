@@ -1,5 +1,7 @@
 package com.example.ifplanmilk.ui.screens.bottomNavBar
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -30,6 +32,7 @@ import com.example.ifplanmilk.ui.screens.simulation.economy.EconomySimulationVie
 import com.example.ifplanmilk.ui.screens.simulation.result.ResultSimulation
 import com.example.ifplanmilk.ui.screens.simulation.result.ResultSimulationViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainBottomNavigationBar() {
     val bottomNavController = rememberNavController()
@@ -89,7 +92,6 @@ fun MainBottomNavigationBar() {
             }
         )
     )
-
     Scaffold(
         bottomBar = {
             if (currentRoute in listOf(
@@ -111,12 +113,12 @@ fun MainBottomNavigationBar() {
                     uiState = homeUiState,
                     onEvent = homeViewModel::onEvent,
                     onNavigateToNewSimulation = {
-                        bottomNavController.navigate(BottomNavItem.NewSimulation.route)
+                        bottomNavController.navigate(Routes.NewSimulation)
                     }
                 )
             }
             composable(BottomNavItem.Settings.route) { ProfileScreen() }
-            composable(BottomNavItem.NewSimulation.route) {
+            composable(Routes.NewSimulation) {
                 NewSimulationScreen(
                     simulationTitle = homeUiState.title,
                     description = homeUiState.description,

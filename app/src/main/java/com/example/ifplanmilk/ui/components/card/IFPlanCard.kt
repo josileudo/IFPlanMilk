@@ -1,17 +1,15 @@
 package com.example.ifplanmilk.ui.components.card
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,17 +23,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,14 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ifplanmilk.R
 import com.example.ifplanmilk.data.model.IFPlanSimulation
+import com.example.ifplanmilk.data.model.IFPlanSwipeUi
 import com.example.ifplanmilk.data.model.mock.IFPlanSimulationMock
 import com.example.ifplanmilk.data.utils.timestampToDate
+import com.example.ifplanmilk.ui.components.swipe.IFPlanActionButton
+import com.example.ifplanmilk.ui.components.swipe.IFPlanSwipeReveal
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun IFPlanCard(
@@ -60,40 +58,39 @@ fun IFPlanCard(
     onClick: () -> Unit = {},
     onDeleteItem: (IFPlanSimulation) -> Unit = {}
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val swipeToDismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { state ->
-            if (state == SwipeToDismissBoxValue.EndToStart) {
-                coroutineScope.launch {
-                    delay(2.seconds)
-                    onDeleteItem(data)
-                }
-                true
-            } else {
-                false
-            }
-        }
-    )
-    SwipeToDismissBox(
-        state = swipeToDismissState,
-        backgroundContent = {
-            val backgroundColor by animateColorAsState(
-                targetValue = when (swipeToDismissState.currentValue) {
-                    SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.primary
-                    SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.error
-                    SwipeToDismissBoxValue.Settled -> MaterialTheme.colorScheme.surface
-                    else -> MaterialTheme.colorScheme.surface
-                }, label = "Color animated"
+    val context = LocalContext.current
+    var simulation = remember {
+        mutableStateOf(
+            IFPlanSwipeUi(
+                data = data,
+                isOptionsRevealed = false
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .background(backgroundColor)
-                    .align(Alignment.CenterVertically),
-            ) {
-                Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
-            }
+        )
+    }.value
+
+    IFPlanSwipeReveal(
+        isRevealed = simulation.isOptionsRevealed,
+        onExpanded = {
+            simulation = simulation.copy(isOptionsRevealed = true)
+        },
+        onCollapsed = {
+            simulation = simulation.copy(isOptionsRevealed = false)
+        },
+        actions = {
+            IFPlanActionButton(
+                onClick = {
+                    Toast.makeText(
+                        context,
+                        "Contact ${simulation.data.title} was deleted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onDeleteItem(data)
+                },
+                backgroundColor = Color.Red,
+                icon = Icons.Default.Delete,
+                tint = Color.White,
+                modifier = Modifier.fillMaxHeight()
+            )
         }
     ) {
         OutlinedCard(
@@ -113,13 +110,14 @@ fun IFPlanCard(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = data.title, style = MaterialTheme.typography.titleLarge.copy(
+                            text = data.title,
+                            style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 16.sp
                             )
                         )
 
-                        data.description?.let {
+                        data.description.let {
                             Text(
                                 text = data.description,
                                 style = MaterialTheme.typography.titleSmall.copy(

@@ -8,4 +8,6 @@ sealed class HomeUiEvent {
     data object OnCloseModal: HomeUiEvent()
     data object OnFetchSimulations: HomeUiEvent()
     data class OnDeleteSimulation(var simulation: IFPlanSimulation): HomeUiEvent()
+    data object OnResetDialogForm: HomeUiEvent()
+    data object OnSaveForm: HomeUiEvent()
 }
