@@ -16,6 +16,10 @@ class SimulationRepository @Inject constructor(private val dao: SimulationDao) {
         }
     }
 
+    suspend fun getSimulationById(simulationId: Long): IFPlanSimulationWithResult? {
+        return dao.getSimulationWithResultsById(simulationId)
+    }
+
     suspend fun getAllSimulations(): List<IFPlanSimulationWithResult> {
         return dao.getAllSimulationsWithResults()
     }

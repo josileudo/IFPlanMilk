@@ -2,7 +2,13 @@ package com.example.ifplanmilk.ui.components.card
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -45,12 +51,20 @@ fun IFPlanCardList(
         }
 
         items(items = simulations, key = { it.id }) { simulation ->
-            IFPlanCard(
-                data = simulation,
-                onClick = { onSimulationClick(simulation) },
-                onDeleteItem = { onDeleteSimulation(simulation) }
-            )
+            AnimatedVisibility(
+                modifier = modifier.fillMaxWidth(),
+                visible = simulations.isNotEmpty(),
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                IFPlanCard(
+                    data = simulation,
+                    onClick = { onSimulationClick(simulation) },
+                    onDeleteItem = { onDeleteSimulation(simulation) }
+                )
+            }
         }
+
 
     }
 }

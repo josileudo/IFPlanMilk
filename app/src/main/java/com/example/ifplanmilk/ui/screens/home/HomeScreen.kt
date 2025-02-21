@@ -2,6 +2,11 @@ package com.example.ifplanmilk.ui.screens.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +30,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit = {},
-    onNavigateToNewSimulation: () -> Unit = {}
+    onNavigateToNewSimulation: () -> Unit = {},
+    onNavigateToDetails: (id: Long) -> Unit = {}
 ) {
     LaunchedEffect(true) {
         onEvent(HomeUiEvent.OnFetchSimulations)
@@ -43,17 +49,24 @@ fun HomeScreen(
             )
 
             HomeSearchBar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = {
+                    onEvent(HomeUiEvent.OnUpdateSearchQuery(it))
+                },
+                value = uiState.filteredItems ?: ""
             )
 
-            IFPlanCardList(
-                modifier = modifier.fillMaxWidth(),
-                simulations = uiState.simulationList,
-                onSimulationClick = {/*TODO*/ },
-                onDeleteSimulation = {
-                    onEvent(HomeUiEvent.OnDeleteSimulation(it))
-                }
-            )
+                IFPlanCardList(
+                    modifier = modifier.fillMaxWidth(),
+                    simulations = uiState.simulationList,
+                    onSimulationClick = {
+                        onNavigateToDetails(it.id)
+                    },
+                    onDeleteSimulation = {
+                        onEvent(HomeUiEvent.OnDeleteSimulation(it))
+                    }
+                )
+
 
             HomeDialog(
                 dialogTitle = "Criar nova simulação",
@@ -67,7 +80,7 @@ fun HomeScreen(
                     onEvent(HomeUiEvent.OnSaveForm).apply {
                         onNavigateToNewSimulation()
                     }
-                 },
+                },
                 onConfirmationEnabled = uiState.formTitle.isNotEmpty(),
                 showDialog = uiState.showDialog,
                 uiState = uiState,

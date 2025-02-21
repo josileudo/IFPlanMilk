@@ -25,6 +25,11 @@ interface SimulationDao {
     @Query("SELECT * FROM simulation_table")
     suspend fun getAllSimulationsWithResults(): List<IFPlanSimulationWithResult>
 
+    // Obter uma simulação com seus resultados por ID
+    @Transaction
+    @Query("SELECT * FROM simulation_table WHERE id = :simulationId")
+    suspend fun getSimulationWithResultsById(simulationId: Long): IFPlanSimulationWithResult?
+
     // Deletar uma simulação
     @Delete
     suspend fun deleteSimulation(simulation: IFPlanSimulationEntity)

@@ -10,4 +10,6 @@ sealed class HomeUiEvent {
     data class OnDeleteSimulation(var simulation: IFPlanSimulation): HomeUiEvent()
     data object OnResetDialogForm: HomeUiEvent()
     data object OnSaveForm: HomeUiEvent()
+    data class OnFetchSimulationByField(var filter: String) : HomeUiEvent()
+    data class OnUpdateSearchQuery(val query: String) : HomeUiEvent()
 }

@@ -8,5 +8,6 @@ data class HomeUiState(
     var formDescription: String = "",
     var title: String = "",
     var description: String = "",
-    var simulationList: List<IFPlanSimulation> = emptyList()
+    var simulationList: List<IFPlanSimulation> = emptyList(),
+    val filteredItems: String? = null,
 )

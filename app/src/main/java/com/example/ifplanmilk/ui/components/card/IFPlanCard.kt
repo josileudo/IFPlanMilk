@@ -18,17 +18,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -153,23 +150,22 @@ fun IFPlanCard(
 
                 }
 
-                Column(modifier = Modifier.padding(16.dp)) {
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(width = 34.dp, height = 34.dp)
-                            .background(MaterialTheme.colorScheme.surfaceTint)
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(width = 22.dp, height = 22.dp),
-                            painter = painterResource(R.drawable.download),
-                            contentDescription = "download",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-
+//                Column(modifier = Modifier.padding(16.dp)) {
+//                    IconButton(
+//                        onClick = { /*TODO*/ },
+//                        modifier = Modifier
+//                            .clip(CircleShape)
+//                            .size(width = 34.dp, height = 34.dp)
+//                            .background(MaterialTheme.colorScheme.surfaceTint)
+//                    ) {
+//                        Icon(
+//                            modifier = Modifier.size(width = 22.dp, height = 22.dp),
+//                            painter = painterResource(R.drawable.download),
+//                            contentDescription = "download",
+//                            tint = MaterialTheme.colorScheme.primary
+//                        )
+//                    }
+//                }
             }
         }
     }

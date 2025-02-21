@@ -6,6 +6,7 @@ import com.example.ifplanmilk.data.entities.IFPlanResultSimulationEntity
 import com.example.ifplanmilk.data.entities.IFPlanSimulationEntity
 import com.example.ifplanmilk.data.repository.SimulationRepository
 import com.example.ifplanmilk.data.utils.SimulationMath
+import com.example.ifplanmilk.data.utils.toDomain
 import com.example.ifplanmilk.ui.screens.simulation.animal.AnimalSimulationUiState
 import com.example.ifplanmilk.ui.screens.simulation.area.AreaSimulationUiState
 import com.example.ifplanmilk.ui.screens.simulation.climateSoil.ClimateSoilSimulationUiState
@@ -44,7 +45,6 @@ class ResultSimulationViewModel @Inject constructor(
                 climateSoilState = event.climateSoilState,
                 slidersState = event.slidersState
             )
-
             is ResultSimulationUiEvent.OnSaveSimulation -> onSaveSimulation(
                 simulationTitle = event.simulationTitle,
                 description = event.description,
@@ -54,10 +54,22 @@ class ResultSimulationViewModel @Inject constructor(
                 climateSoilState = event.climateSoilState,
                 slidersState = event.slidersState
             )
-
+            is ResultSimulationUiEvent.OnGetResult -> getResult(event.id)
             else -> {}
         }
     }
+
+    private fun getResult(id: Long) {
+        viewModelScope.launch {
+            val simulation = repository.getSimulationById(id)?.result
+            simulation?.let {
+                _uiState.value = _uiState.value.copy(
+                    resultSimulation = it.toDomain()
+                )
+            }
+        }
+    }
+
     private fun onResultSimulation(
         areaState: AreaSimulationUiState,
         animalState: AnimalSimulationUiState,

@@ -17,6 +17,7 @@ data object Routes {
     const val NewSimulation = "new_simulation"
     const val Settings = "settings"
     const val ResultSimulation = "result_simulation"
+    const val DetailsSimulation = "details_simulation"
 }
 
 sealed class BottomNavItem(

@@ -12,6 +12,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +26,21 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    // Novo fluxo para a query de busca
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _searchQuery
+                .debounce(300L)
+                .distinctUntilChanged()
+                .collect { query ->
+                    fetchSimulationByField(query)
+                }
+        }
+    }
+
     fun onEvent(event: HomeUiEvent) {
         when(event) {
             is HomeUiEvent.OnOpenModal -> onOpenModal()
@@ -33,8 +50,15 @@ class HomeViewModel @Inject constructor(
             is HomeUiEvent.OnDeleteSimulation -> onDeleteSimulation(event.simulation)
             is HomeUiEvent.OnResetDialogForm -> onResetDialogForm()
             is HomeUiEvent.OnSaveForm -> onSaveForm()
+            is HomeUiEvent.OnUpdateSearchQuery -> onSearchQueryChanged(event.query)
             else -> {}
         }
+    }
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+        // Também pode atualizar o estado se necessário:
+        _uiState.update { it.copy(filteredItems = query) }
     }
 
     private fun onOpenModal() {
@@ -98,13 +122,32 @@ class HomeViewModel @Inject constructor(
 
     private fun onResetDialogForm() {
         viewModelScope.launch {
-            delay(3.seconds)
+            delay(1.seconds)
             _uiState.update {
                 it.copy(
                     formTitle = "",
                     formDescription = ""
                 )
             }
+        }
+    }
+
+    private fun fetchSimulationByField(filter: String = "") {
+        viewModelScope.launch {
+            val allSimulations = repository.getAllSimulations().map {
+                it.simulation.toDomain()
+            }
+
+            val filteredSimulations = if (filter.isBlank()) {
+                allSimulations
+            } else {
+                allSimulations.filter { item -> item.title.contains(filter, ignoreCase = true) }
+            }
+
+            _uiState.value = _uiState.value.copy(
+                simulationList = filteredSimulations,
+                filteredItems = filter
+            )
         }
     }
 }

@@ -24,6 +24,7 @@ sealed class ResultSimulationUiEvent {
         var climateSoilState: ClimateSoilSimulationUiState,
         var slidersState: SlidersSimulationUiState
     ) : ResultSimulationUiEvent()
+    data class OnGetResult(val id: Long) : ResultSimulationUiEvent()
 
     data object OnSuccessSimulationSaved : ResultSimulationUiEvent()
     data object OnFiledSimulationSaved : ResultSimulationUiEvent()

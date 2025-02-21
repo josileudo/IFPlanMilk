@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -12,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ifplanmilk.ui.components.button.IFPlanButton
+import com.example.ifplanmilk.ui.components.print.ScreenshotComposable
 import com.example.ifplanmilk.ui.components.simulation.result.ResultSimulationContainer
 import com.example.ifplanmilk.ui.components.simulation.result.ResultSimulationHeader
 import com.example.ifplanmilk.ui.screens.simulation.animal.AnimalSimulationUiState
@@ -42,16 +46,18 @@ import com.example.ifplanmilk.ui.screens.simulation.sliders.SlidersSimulationVie
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
 @Composable
-fun ResultSimulation(
+fun ResultSimulationScreen(
     modifier: Modifier = Modifier,
+    isDetails: Boolean = false,
     areaState: AreaSimulationUiState,
     animalState: AnimalSimulationUiState,
     economyState: EconomySimulationUiState,
     climateSoilState: ClimateSoilSimulationUiState,
     simulationTitle: String = "",
     description: String = "",
+    simulationId: Long = -1,
     onNavigateToHome: () -> Unit = {},
-    ) {
+) {
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val resultSimulationViewModel: ResultSimulationViewModel = hiltViewModel()
@@ -82,8 +88,15 @@ fun ResultSimulation(
                 is ResultSimulationUiEvent.OnSuccessSimulationSaved -> {
                     onNavigateToHome()
                 }
+
                 else -> {}
             }
+        }
+    }
+
+    LaunchedEffect(simulationId) {
+        if (simulationId != -1L) {
+            onEvent(ResultSimulationUiEvent.OnGetResult(simulationId))
         }
     }
 
@@ -97,60 +110,71 @@ fun ResultSimulation(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            ResultSimulationHeader(
-                onClick = {
-                    onEvent(
-                        ResultSimulationUiEvent.OnSaveSimulation(
-                            simulationTitle = simulationTitle,
-                            description = description,
-                            areaState = areaState,
-                            animalState = animalState,
-                            economyState = economyState,
-                            slidersState = slidersState,
-                            climateSoilState = climateSoilState
+            if (!isDetails) {
+                ResultSimulationHeader(
+                    onClick = {
+                        onEvent(
+                            ResultSimulationUiEvent.OnSaveSimulation(
+                                simulationTitle = simulationTitle,
+                                description = description,
+                                areaState = areaState,
+                                animalState = animalState,
+                                economyState = economyState,
+                                slidersState = slidersState,
+                                climateSoilState = climateSoilState
+                            )
                         )
-                    )
+                    }
+                )
+            }
+
+            ScreenshotComposable(
+                isDetails = isDetails,
+                simulationTitle = simulationTitle,
+                onNavigateToHome = {
+                    onNavigateToHome()
                 }
-            )
-
-            ResultSimulationContainer(
-                modifier = modifier.fillMaxWidth(),
-                result = result
-            )
-
+            ) {
+                ResultSimulationContainer(
+                    modifier = modifier.fillMaxWidth(),
+                    result = result
+                )
+            }
         }
 
-        Box {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                // Botão, posicionado na parte inferior do Box
-                IFPlanButton(
-                    onClick = { showBottomSheet = true },
-                    text = "Simular",
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .zIndex(1f)
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(30.dp)
-                        .align(Alignment.TopCenter)
-                        .offset(y = (-20).dp)
-                        .zIndex(1f)
-                        .background(color = Color.White, shape = CircleShape)
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = CircleShape
-                        )
-                ) {
-                    Icon(
-                        imageVector = Icons.Sharp.KeyboardArrowUp,
-                        contentDescription = "Arrow Up",
-                        modifier = Modifier.align(Alignment.Center)
+        if(!isDetails) {
+            Box {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    // Botão, posicionado na parte inferior do Box
+                    IFPlanButton(
+                        onClick = { showBottomSheet = true },
+                        text = "Simular",
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .padding(bottom = 4.dp)
+                            .zIndex(1f)
                     )
+
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .align(Alignment.TopCenter)
+                            .offset(y = (-20).dp)
+                            .zIndex(1f)
+                            .background(color = Color.White, shape = CircleShape)
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.primary,
+                                shape = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Sharp.KeyboardArrowUp,
+                            contentDescription = "Arrow Up",
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }
@@ -171,7 +195,7 @@ fun ResultSimulation(
 @Composable
 fun ResultSimulationPreview() {
     IFPlanMilkTheme {
-        ResultSimulation(
+        ResultSimulationScreen(
             modifier = Modifier.zIndex(5f),
             areaState = AreaSimulationUiState(),
             animalState = AnimalSimulationUiState(),
