@@ -36,18 +36,19 @@ fun HomeDialog(
         onConfirmationEnabled = onConfirmationEnabled,
         showDialog = showDialog
     ) {
+
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
-                value = uiState.title,
-                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("title", it)) },
+                value = uiState.formTitle,
+                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("formTitle", it)) },
                 placeholder = { Text("Título") },
             )
 
             OutlinedTextField(
-                value = uiState.description,
-                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("description", it)) },
+                value = uiState.formDescription,
+                onValueChange = { onEvent(HomeUiEvent.OnUpdateFields("formDescription", it)) },
                 placeholder = { Text("Descrição") },
             )
         }

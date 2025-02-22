@@ -35,7 +35,7 @@ fun IFPlanButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
     iconRes: ImageVector? = null,
-
+    imageRes: Int? = null,
     size: String = "md"
 ) {
     val height = when (size) {

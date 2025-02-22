@@ -37,11 +37,11 @@ class SimulationMath {
         val aguaUsos = climateSoilState.otherAndWater
         val aguaDisponivelPorIrrigacao = climateSoilState.waterAvailableToIrrigation
 
-        val varCoe = (slidersState.sliderCoeValue / 100)
-        val varDpl = (slidersState.sliderDplValue / 100)
-        val varFor = (slidersState.sliderForValue / 100)
-        val varMs = (slidersState.sliderMsValue / 100)
-        val varPreco = (slidersState.sliderPrecoValue / 100)
+        val varCoe = (slidersState.sliderCoeValue / 100) + 1
+        val varDpl = (slidersState.sliderDplValue / 100) + 1
+        val varFor = (slidersState.sliderForValue / 100) + 1
+        val varMs = (slidersState.sliderMsValue / 100) + 1
+        val varPreco = (slidersState.sliderPrecoValue / 100) + 1
 
         println("*** $areaState $animalState $economyState $climateSoilState")
 

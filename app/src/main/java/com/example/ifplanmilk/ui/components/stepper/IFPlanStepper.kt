@@ -5,6 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,31 +60,52 @@ fun IFPlanStepper(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(1f).padding(bottom = 56.dp),
+            modifier = Modifier.fillMaxWidth(1f),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IFPlanButton(
-                text = "Voltar",
-                size = "sm",
-                enabled = currStep > 0,
+            IconButton(
                 onClick = {
                     if (currStep > 0) {
                         currStep--
                     }
-                }
-            )
-
-            IFPlanButton(
-                text = if(currStep == steps.lastIndex) "Finalizar" else "Próximo",
-                onClick = {
-                    if(currStep < steps.lastIndex) {
-                        currStep ++
-                    } else {
-                        onFinished()
-                    }
                 },
-                size = "sm"
-            )
+                enabled = currStep > 0,
+                colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.primary),
+            ) {
+                Icon(
+                    imageVector =
+                        Icons.Filled.KeyboardArrowLeft,
+                    contentDescription = null,
+                    tint = if(currStep > 0)(MaterialTheme.colorScheme.background) else MaterialTheme.colorScheme.primary
+                )
+            }
+
+            if(currStep < steps.lastIndex) {
+                IconButton(
+                    onClick = {
+                        if(currStep < steps.lastIndex) {
+                            currStep ++
+                        }
+                    },
+                    colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.primary),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.background
+                    )
+                }
+            } else {
+                IFPlanButton(
+                    text = "Ver resultado",
+                    onClick = {
+                        onFinished()
+                    },
+                    size = "sm"
+                )
+            }
+
+
         }
     }
 }

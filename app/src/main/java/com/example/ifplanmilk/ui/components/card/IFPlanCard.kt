@@ -1,6 +1,7 @@
 package com.example.ifplanmilk.ui.components.card
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -8,11 +9,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,10 +24,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,8 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ifplanmilk.R
 import com.example.ifplanmilk.data.model.IFPlanSimulation
+import com.example.ifplanmilk.data.model.IFPlanSwipeUi
 import com.example.ifplanmilk.data.model.mock.IFPlanSimulationMock
 import com.example.ifplanmilk.data.utils.timestampToDate
+import com.example.ifplanmilk.ui.components.swipe.IFPlanActionButton
+import com.example.ifplanmilk.ui.components.swipe.IFPlanSwipeReveal
 import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -41,80 +52,123 @@ import com.example.ifplanmilk.ui.theme.IFPlanMilkTheme
 fun IFPlanCard(
     modifier: Modifier = Modifier,
     data: IFPlanSimulation,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onDeleteItem: (IFPlanSimulation) -> Unit = {}
 ) {
-  OutlinedCard(
-      modifier = modifier.fillMaxWidth(),
-      onClick = onClick,
-      colors = CardDefaults.outlinedCardColors(),
-      border = BorderStroke(2.dp, MaterialTheme.colorScheme.inverseSurface)
-  ) {
-      Row(horizontalArrangement = Arrangement.SpaceBetween){
-          Column(
-              modifier = Modifier.weight(1f).padding(vertical = 16.dp, horizontal = 8.dp),
-          ) {
-              Column (
-                  modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
-                  verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                  Text(
-                      text = data.title, style = MaterialTheme.typography.titleLarge.copy(
-                          fontWeight = FontWeight.SemiBold,
-                          fontSize = 16.sp
-                      )
-                  )
+    val context = LocalContext.current
+    var simulation = remember {
+        mutableStateOf(
+            IFPlanSwipeUi(
+                data = data,
+                isOptionsRevealed = false
+            )
+        )
+    }.value
 
-                  data.description?.let {
-                      Text(
-                          text = data.description,
-                          style = MaterialTheme.typography.titleSmall.copy(
-                              fontSize = 13.sp,
-                              fontWeight = FontWeight.Normal
-                          )
-                      )
-                  }
+    IFPlanSwipeReveal(
+        isRevealed = simulation.isOptionsRevealed,
+        onExpanded = {
+            simulation = simulation.copy(isOptionsRevealed = true)
+        },
+        onCollapsed = {
+            simulation = simulation.copy(isOptionsRevealed = false)
+        },
+        actions = {
+            IFPlanActionButton(
+                onClick = {
+                    Toast.makeText(
+                        context,
+                        "Contact ${simulation.data.title} was deleted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onDeleteItem(data)
+                },
+                backgroundColor = Color.Red,
+                icon = Icons.Default.Delete,
+                tint = Color.White,
+                modifier = Modifier.fillMaxHeight()
+            )
+        }
+    ) {
+        OutlinedCard(
+            modifier = modifier.fillMaxWidth(),
+            onClick = onClick,
+            colors = CardDefaults.outlinedCardColors(),
+            border = BorderStroke(2.dp, MaterialTheme.colorScheme.inverseSurface)
+        ) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 16.dp, horizontal = 8.dp),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = data.title,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp
+                            )
+                        )
 
-                  Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                      Image(
-                          painterResource(R.drawable.calendar_month),
-                          contentDescription = "calendar_icon",
-                          modifier = Modifier.height(20.dp),
-                          colorFilter = ColorFilter.tint(
-                              MaterialTheme.colorScheme.primary
-                          )
-                      )
-                      Text(
-                          text = data.creationDate.timestampToDate(),
-                          textAlign = TextAlign.Center,
-                          style = MaterialTheme.typography.titleSmall.copy(
-                              fontSize = 13.sp,
-                              fontWeight = FontWeight.Normal,
-                          ),
-                          maxLines = 2
-                      )
-                  }
-              }
+                        data.description.let {
+                            Text(
+                                text = data.description,
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            )
+                        }
 
-          }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Image(
+                                painterResource(R.drawable.calendar_month),
+                                contentDescription = "calendar_icon",
+                                modifier = Modifier.height(20.dp),
+                                colorFilter = ColorFilter.tint(
+                                    MaterialTheme.colorScheme.primary
+                                )
+                            )
+                            Text(
+                                text = data.creationDate.timestampToDate(),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Normal,
+                                ),
+                                maxLines = 2
+                            )
+                        }
+                    }
 
-          Column (modifier = Modifier.padding(16.dp)) {
-              IconButton(
-                  onClick = { /*TODO*/ },
-                  modifier = Modifier
-                      .clip(CircleShape)
-                      .size(width = 34.dp, height = 34.dp)
-                      .background(MaterialTheme.colorScheme.surfaceTint)
-              ) {
-                  Icon(
-                      modifier = Modifier.size(width = 22.dp, height = 22.dp),
-                      painter = painterResource(R.drawable.download),
-                      contentDescription = "download",
-                      tint = MaterialTheme.colorScheme.primary
-                  )
-              }
-          }
+                }
 
-      }
-  }
+//                Column(modifier = Modifier.padding(16.dp)) {
+//                    IconButton(
+//                        onClick = { /*TODO*/ },
+//                        modifier = Modifier
+//                            .clip(CircleShape)
+//                            .size(width = 34.dp, height = 34.dp)
+//                            .background(MaterialTheme.colorScheme.surfaceTint)
+//                    ) {
+//                        Icon(
+//                            modifier = Modifier.size(width = 22.dp, height = 22.dp),
+//                            painter = painterResource(R.drawable.download),
+//                            contentDescription = "download",
+//                            tint = MaterialTheme.colorScheme.primary
+//                        )
+//                    }
+//                }
+            }
+        }
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

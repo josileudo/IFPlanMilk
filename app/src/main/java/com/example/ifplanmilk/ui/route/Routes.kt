@@ -17,6 +17,7 @@ data object Routes {
     const val NewSimulation = "new_simulation"
     const val Settings = "settings"
     const val ResultSimulation = "result_simulation"
+    const val DetailsSimulation = "details_simulation"
 }
 
 sealed class BottomNavItem(
@@ -30,13 +31,6 @@ sealed class BottomNavItem(
         title = "Simulações",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
-    )
-
-    object NewSimulation : BottomNavItem(
-        route = Routes.NewSimulation,
-        title = "Nova Simulação",
-        selectedIcon = Icons.Filled.Person,
-        unselectedIcon = Icons.Outlined.Person
     )
 
     object Settings : BottomNavItem(
